@@ -2,7 +2,7 @@
 #'
 #' The generalized estimator works on error models with covariance of the form cov(X) + Mj; this function estimates the residual Mj term.
 #' 
-#' @inheritsParams generalizedRC
+#' @inheritParams generalizedRC
 #' @return A list M_j, the error-covariance structure matrix.
 #' @seealso [getOptimalWeights()] which calls this function to compute weights [generalizedRC()] which uses this if non-optimal weights are selected
 #' @export

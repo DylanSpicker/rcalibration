@@ -2,7 +2,7 @@
 #'
 #' This function returns the "optimal" weights for a set of 
 #' 
-#' @inheritsParams generalizedRC
+#' @inheritParams generalizedRC
 #' @return A list containing $weights, the optimally computed weights, as well as 
 #'    $M_j, the error-covariance structure matrix.
 #' @seealso [getMj()] which this function calls for the $Mj return, [generalizedRC()] which uses these weights
