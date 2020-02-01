@@ -1,6 +1,6 @@
 Package: rcalibration
 Title: Implements Generalized Regression Calibration (and Related) Estimators for Measurement Error Correction.
-Version: 0.1.1.9000
+Version: 0.1.2.9000
 Authors@R: 
     person(given = "Dylan",
            family = "Spicker",
