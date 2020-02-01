@@ -58,9 +58,9 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
     stop(paste0("Weights must either (i) a vector of length k (", k, ") of numbers which sum to 1, or (ii) a string indication one of {[o]ptimal, [e]qual}."))
   }
 
-  ####################
+  ################################
   # All Parameter Inputs are good!
-  ####################
+  ###############################
   
   M_j <- NULL
 
