@@ -54,7 +54,7 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
 
   # Check on weights
   if (! (is.vector(weights) && length(weights) == k && is.numeric(weights) && sum(weights) == 1) && 
-      ! (inherits(weights, "character") && sum(startsWith(tolower(weights), c('o','e'))))) {
+      ! (inherits(weights, "character") && length(weights) == 1 && sum(startsWith(tolower(weights), c('o','e'))))) {
     stop(paste0("Weights must either (i) a vector of length k (", k, ") of numbers which sum to 1, or (ii) a string indication one of {[o]ptimal, [e]qual}."))
   }
 
@@ -65,7 +65,7 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
   M_j <- NULL
 
   # Find weights
-  if (! is.vector(weights)) {
+  if (length(weights) ==  1) {
     if (startsWith(weights, "o")) {
       weights.obj <- getOptimalWeights(W)
       weights <- weights.obj$weights
