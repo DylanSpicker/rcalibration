@@ -1,0 +1,13 @@
+Package: rcalibration
+Title: Implements Generalized Regression Calibration (and Related) Estimators for Measurement Error Correction.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Dylan",
+           family = "Spicker",
+           role = c("aut", "cre"),
+           email = "dylan.spicker@uwaterloo.com")
+Description: This package implements a generalized regression calibration estimator, for the correction of measurement error in standard modelling contexts. This generalized estimator contains the more common replicate-based estimators (Carroll, et al., 2006) as a special case and incorporates a broad correction that establishes consistency under a broad class of error models. The package further provides utilities related to these corrections, notably the capacity to compute optimal weights when taking a convex combination of error-prone proxies and utilities for estimating the structure of errors observed in data. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2.9000
