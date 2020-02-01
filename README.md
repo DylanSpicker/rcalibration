@@ -12,7 +12,7 @@ devtools::install_github("dylanspicker/rcalibration")
 
 ## Usage
 The following example shows a brief simulation of the package in use. 
-```{r}
+```r
 # Using 'MASS' for 'mvrnorm'
 library(rcalibration)
 library(MASS)
