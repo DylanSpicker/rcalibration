@@ -1,14 +1,14 @@
-  #' An Estimator for "Optimal" Weight Selection
-  #'
-  #' This function returns the "optimal" weights for a set of 
-  #' 
-  #' @inheritsParams generalizedRC
-  #' @return A list containing $weights, the optimally computed weights, as well as 
-  #'    $M_j, the error-covariance structure matrix.
-  #' @seealso [getMj()] which this function calls for the $Mj return, [generalizedRC()] which uses these weights
-  #' @export
-  #' @examples
-  #' getOptimalWeights(W)
+#' An Estimator for "Optimal" Weight Selection
+#'
+#' This function returns the "optimal" weights for a set of 
+#' 
+#' @inheritsParams generalizedRC
+#' @return A list containing $weights, the optimally computed weights, as well as 
+#'    $M_j, the error-covariance structure matrix.
+#' @seealso [getMj()] which this function calls for the $Mj return, [generalizedRC()] which uses these weights
+#' @export
+#' @examples
+#' getOptimalWeights(W)
 
 getOptimalWeights <- function(W) {
   #################

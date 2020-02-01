@@ -1,20 +1,20 @@
-  #' A Generalized Regression Calibration Estimator
-  #'
-  #' This function computes the imputed values based on a list of error-prone proxies of the true covariate.
-  #' 
-  #' @param W A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 
-  #'    (dimension of covariates).
-  #' @param Z A matrix containing all error-free covariates for use in estimation. Matrix should be n (observations) x q (dimension). 
-  #'    Use NULL if no such covariates exist. Defaults to NULL.
-  #' @param weights Either a string from {'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
-  #'    summing to one, which serve as the convex combination of weights. Defaults to 'optimal'
-  #' @param return_var A boolean represent whether the correction function and weights should be returned (TRUE) or only the imputed values. Defaults to FALSE.
-  #' @return Either a matrix of imputed values of size n x p (if return_var is FALSE), or a list which contains elements
-  #'    $X.hat (the aforementioned imputed matrix), $fitRC (a function which can be used to make the same correction), and
-  #'    $weights (the weights used in the correction).
-  #' @export
-  #' @examples
-  #' generalizedRC(W, weights="equal")
+#' A Generalized Regression Calibration Estimator
+#'
+#' This function computes the imputed values based on a list of error-prone proxies of the true covariate.
+#' 
+#' @param W A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 
+#'    (dimension of covariates).
+#' @param Z A matrix containing all error-free covariates for use in estimation. Matrix should be n (observations) x q (dimension). 
+#'    Use NULL if no such covariates exist. Defaults to NULL.
+#' @param weights Either a string from {'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
+#'    summing to one, which serve as the convex combination of weights. Defaults to 'optimal'
+#' @param return_var A boolean represent whether the correction function and weights should be returned (TRUE) or only the imputed values. Defaults to FALSE.
+#' @return Either a matrix of imputed values of size n x p (if return_var is FALSE), or a list which contains elements
+#'    $X.hat (the aforementioned imputed matrix), $fitRC (a function which can be used to make the same correction), and
+#'    $weights (the weights used in the correction).
+#' @export
+#' @examples
+#' generalizedRC(W, weights="equal")
   
 generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
   #####################
