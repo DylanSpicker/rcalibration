@@ -81,10 +81,10 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
   }
 
   # We have usable weights in 'weights', compute the estimator to use
-  Xstar <- Reduce("+", lapply(1:k, function(ii){ return(weights[i]*W[[ii]]) }))
+  Xstar <- Reduce("+", lapply(1:k, function(ii){ return(weights[ii]*W[[ii]]) }))
   mu_x_hat <- colMeans(Xstar)
   SigmaXstar <- cov(Xstar)
-  SigmaXX <- SigmaXstar - Reduce("+", lapply(1:k, function(ii){ (weights[i]**2)*M_j[[ii_x]] }))
+  SigmaXX <- SigmaXstar - Reduce("+", lapply(1:k, function(ii){ (weights[ii]**2)*M_j[[ii]] }))
 
   # Set Z parameters to be null by default
   mu_z_hat <- NULL
