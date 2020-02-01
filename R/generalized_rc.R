@@ -97,16 +97,16 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
     SigmaXZ <- cov(Xstar, Z)
 
     correction <- function(Xstar, Z) {
-      return(mu_x_hat + cbind(SigmaXX, SigmaXZ) %*% 
-                       solve(rbind(cbind(SigmaXstar, SigmaXZ),
-                             cbind(t(SigmaXZ), SigmaZ))) %*% 
-                       rbind(t(t(Xstar) - mu_x_hat), t(t(Z) - mu_z_hat)))
+      return(mu_x_hat + t(cbind(SigmaXX, SigmaXZ) %*% 
+                          solve(rbind(cbind(SigmaXstar, SigmaXZ),
+                                    cbind(t(SigmaXZ), SigmaZ))) %*% 
+                          rbind(t(Xstar) - mu_x_hat, t(Z) - mu_z_hat)))
     }
 
   } else {
     correction <- function(Xstar, Z=NULL){
-      if (! is.null(Z) ) warning("This model was fit without a 'Z', but you provided one for the correction. It is being ignored. ")
-      return(mu_x_hat + SigmaXX %*% solve(SigmaXstar) %*% t(t(Xstar) - mu_x_hat))
+        if (! is.null(Z) ) warning("This model was fit without a 'Z', but you provided one for the correction. It is being ignored. ")
+        return(mu_x_hat + t(SigmaXX %*% solve(SigmaXstar) %*% (t(Xstar) - mu_x_hat)))
     }
   }
 
