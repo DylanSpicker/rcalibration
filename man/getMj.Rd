@@ -20,5 +20,5 @@ The generalized estimator works on error models with covariance of the form cov(
 getMj(W)
 }
 \seealso{
-[getOptimalWeights()] which calls this function to compute weights [generalizedRC()] which uses this if non-optimal weights are selected
+[rcalibration::getOptimalWeights()] which calls this function to compute weights [rcalibration::generalizedRC()] which uses this if non-optimal weights are selected
 }

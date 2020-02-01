@@ -21,5 +21,5 @@ This function returns the "optimal" weights for a set of
 getOptimalWeights(W)
 }
 \seealso{
-[getMj()] which this function calls for the $Mj return, [generalizedRC()] which uses these weights
+[rcalibration::getMj()] which this function calls for the $Mj return, [generalizedRC()] which uses these weights
 }

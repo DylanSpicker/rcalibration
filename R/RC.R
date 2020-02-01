@@ -3,7 +3,7 @@
 #' This function implements the standard regression calibration estimator, based on replicated measurements.
 #' 
 #' @inherit generalizedRC params return
-#' @seealso [generalizedRC()] which this function is just a wrapper for
+#' @seealso [rcalibration::generalizedRC()] which this function is just a wrapper for
 #' @export
 #' @examples
 #' generalizedRC(W, weights="equal")

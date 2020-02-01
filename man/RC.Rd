@@ -27,5 +27,5 @@ This function implements the standard regression calibration estimator, based on
 generalizedRC(W, weights="equal")
 }
 \seealso{
-[generalizedRC()] which this function is just a wrapper for
+[rcalibration::generalizedRC()] which this function is just a wrapper for
 }

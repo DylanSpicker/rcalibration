@@ -4,7 +4,7 @@
 #' 
 #' @inheritParams generalizedRC
 #' @return A list M_j, the error-covariance structure matrix.
-#' @seealso [getOptimalWeights()] which calls this function to compute weights [generalizedRC()] which uses this if non-optimal weights are selected
+#' @seealso [rcalibration::getOptimalWeights()] which calls this function to compute weights [rcalibration::generalizedRC()] which uses this if non-optimal weights are selected
 #' @export
 #' @examples
 #' getMj(W)
