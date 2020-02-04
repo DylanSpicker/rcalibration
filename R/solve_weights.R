@@ -61,11 +61,16 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
         if(all(new_weights - cur_weights <= epsilon)) {
             return(list(weights=new_weights, M_j=M_j))
+        } else if(any(new_weights <= epsilon)) {
+            warning(paste0("During the numerical solving process, on iteration ", ii, " the following weights were essentially 0: ", 
+                           paste0(which(new_weights <= epsilon), collapse=","),
+                           ". Consider looking further into those proxies."))
+            break
         }
 
         cur_weights <- new_weights
     }
 
-    warning(paste0("Numerical solving for the weights did not converge after ", maxit, " iterations. Continuing computation with the current weights."))
+    warning(paste0("Numerical solving for the weights did not converge after ", ii, " iterations. Continuing computation with the current weights."))
     list(weights=new_weights, M_j=M_j)
 }
