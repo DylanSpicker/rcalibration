@@ -15,7 +15,8 @@ A list containing $weights, the optimally computed weights, as well as
    $M_j, the error-covariance structure matrix.
 }
 \description{
-This function returns the "optimal" weights for a set of
+This function returns the "optimal" weights for a set of unbiased proxies for the truth. The optimality condition is based on
+ the minimization of the MSE, using the weighted proxy as an estimator for the true covariate.
 }
 \examples{
 getOptimalWeights(W)

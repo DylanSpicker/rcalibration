@@ -1,6 +1,7 @@
 #' An Estimator for "Optimal" Weight Selection
 #'
-#' This function returns the "optimal" weights for a set of 
+#' This function returns the "optimal" weights for a set of unbiased proxies for the truth. The optimality condition is based on
+#'  the minimization of the MSE, using the weighted proxy as an estimator for the true covariate.
 #' 
 #' @inheritParams generalizedRC
 #' @return A list containing $weights, the optimally computed weights, as well as 
@@ -33,9 +34,7 @@ getOptimalWeights <- function(W) {
 
   # Compute the weights
   M_j <- getMj(W)
-  delta_j <- lapply(M_j, function(x){ return(sum(diag(x))) }) # Final Weights
-  scale <- Reduce("+", delta_j)
+  delta_j <- lapply(M_j, function(x){ return(1/sum(diag(x))) }) # Final Weights
   
-  list(weights=unlist(lapply(delta_j, function(x){return(x/scale)})),
-              M_j = M_j)
+  list(weights=unlist(delta_j)/Reduce("+", delta_j), M_j = M_j)
 }

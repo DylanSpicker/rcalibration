@@ -4,7 +4,7 @@
 \alias{generalizedRC}
 \title{A Generalized Regression Calibration Estimator}
 \usage{
-generalizedRC(W, Z = NULL, weights = "optimal", return_var = FALSE)
+generalizedRC(W, Z = NULL, weights = "numeric", return_var = FALSE)
 }
 \arguments{
 \item{W}{A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 
@@ -13,8 +13,8 @@ generalizedRC(W, Z = NULL, weights = "optimal", return_var = FALSE)
 \item{Z}{A matrix containing all error-free covariates for use in estimation. Matrix should be n (observations) x q (dimension). 
 Use NULL if no such covariates exist. Defaults to NULL.}
 
-\item{weights}{Either a string from {'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
-summing to one, which serve as the convex combination of weights. Defaults to 'optimal'}
+\item{weights}{Either a string from {'numeric', 'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
+summing to one, which serve as the convex combination of weights. Defaults to 'numeric'.}
 
 \item{return_var}{A boolean represent whether the correction function and weights should be returned (TRUE) or only the imputed values. Defaults to FALSE.}
 }

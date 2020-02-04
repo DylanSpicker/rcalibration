@@ -6,8 +6,8 @@
 #'    (dimension of covariates).
 #' @param Z A matrix containing all error-free covariates for use in estimation. Matrix should be n (observations) x q (dimension). 
 #'    Use NULL if no such covariates exist. Defaults to NULL.
-#' @param weights Either a string from {'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
-#'    summing to one, which serve as the convex combination of weights. Defaults to 'optimal'
+#' @param weights Either a string from {'numeric', 'optimal', 'equal'} (only required up to the point of unique identification) or a vector containing 'k' numbers, 
+#'    summing to one, which serve as the convex combination of weights. Defaults to 'numeric'.
 #' @param return_var A boolean represent whether the correction function and weights should be returned (TRUE) or only the imputed values. Defaults to FALSE.
 #' @return Either a matrix of imputed values of size n x p (if return_var is FALSE), or a list which contains elements
 #'    $X.hat (the aforementioned imputed matrix), $fitRC (a function which can be used to make the same correction), and
@@ -16,7 +16,7 @@
 #' @examples
 #' generalizedRC(W, weights="equal")
   
-generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
+generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE) {
   #####################
   # Parameter Checking
   ######################
@@ -53,8 +53,9 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
   }
 
   # Check on weights
+  weight_techiques <- c('n', 'o','e')
   if (! (is.vector(weights) && length(weights) == k && is.numeric(weights) && (abs(sum(weights) - 1) <= 10e-16)) && 
-      ! (inherits(weights, "character") && length(weights) == 1 && sum(startsWith(tolower(weights), c('o','e'))))) {
+      ! (inherits(weights, "character") && length(weights) == 1 && sum(startsWith(tolower(weights), weight_techiques)))) {
     stop(paste0("Weights must either (i) a vector of length k (", k, ") of numbers which sum to 1, or (ii) a string indication one of {[o]ptimal, [e]qual}."))
   }
 
@@ -66,7 +67,11 @@ generalizedRC <- function(W, Z=NULL, weights="optimal", return_var=FALSE) {
 
   # Find weights
   if (length(weights) ==  1) {
-    if (startsWith(weights, "o")) {
+    if (startsWith(weights, "n")){
+      weights.obj <- solveWeights(W)
+      weights <- weights.obj$weights
+      M_j <- weights.obj$M_j
+    } else if (startsWith(weights, "o")) {
       weights.obj <- getOptimalWeights(W)
       weights <- weights.obj$weights
       M_j <- weights.obj$M_j
