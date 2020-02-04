@@ -29,8 +29,17 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
     }, error = function(msg){
         stop(paste0("An error occurred while trying to convert the elements of 'W' to be matrices. Please ensure that all elements are matrices. ERROR: ", msg))
     })
-    
+
     if(length(unique(lapply(W, dim))) != 1) stop("Every element in W must have the same dimmensions.")
+
+    ## Begin Iteration
+    grabWeights <- function(cur_beta, M_j) {
+        inverse_traces <- lapply(M_j, function(mtx){
+            1/sum(diag(t(cur_beta)%*%cur_beta%*%mtx))
+        })
+
+        unlist(inverse_traces)/(Reduce("+", inverse_traces))
+    }
 
     n <- nrow(W[[1]])
     p <- ncol(W[[1]])
