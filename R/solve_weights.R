@@ -62,6 +62,8 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
         if(all(new_weights - cur_weights <= epsilon)) {
             return(list(weights=new_weights, M_j=M_j))
         } else if(any(new_weights <= epsilon)) {
+            new_weights[which(new_weights <= epsilon)] <- epsilon
+            new_weights <- new_weights/sum(new_weights)
             warning(paste0("During the numerical solving process, on iteration ", ii, " the following weights were essentially 0: ", 
                            paste0(which(new_weights <= epsilon), collapse=","),
                            ". Consider looking further into those proxies."))
