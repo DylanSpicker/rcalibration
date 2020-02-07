@@ -32,7 +32,6 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
     if(length(unique(lapply(W, dim))) != 1) stop("Every element in W must have the same dimmensions.")
 
-    ## Begin Iteration
     grabWeights <- function(cur_beta, M_j) {
         inverse_traces <- lapply(M_j, function(mtx){
             1/sum(diag(t(cur_beta)%*%cur_beta%*%mtx))
@@ -47,32 +46,18 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
     # Compute the weights
     M_j <- getMj(W)
-
-    cur_weights <- rep(1/k, k)
-    for(ii in 1:maxit) {
+        
+    zeroFun <- function(cur_weights) {
         cur_w <- Reduce("+", lapply(1:k, function(idx){ cur_weights[idx]*W[[idx]] }))
         Sigma_WW <- cov(cur_w)
         Sigma_XX <- Sigma_WW - Reduce("+", lapply(1:k, function(idx){ (cur_weights[idx]**2)*M_j[[idx]] }))
-
-        # Compute the Coefficients (no gamma since Z dne)
         cur_beta <- Sigma_XX%*%solve(Sigma_WW)
 
-        new_weights <- grabWeights(cur_beta, M_j)
-
-        if(all(new_weights - cur_weights <= epsilon)) {
-            return(list(weights=new_weights, M_j=M_j))
-        } else if(any(new_weights <= epsilon)) {
-            new_weights[which(new_weights <= epsilon)] <- epsilon
-            new_weights <- new_weights/sum(new_weights)
-            warning(paste0("During the numerical solving process, on iteration ", ii, " the following weights were essentially 0: ", 
-                           paste0(which(new_weights <= epsilon), collapse=","),
-                           ". Consider looking further into those proxies."))
-            break
-        }
-
-        cur_weights <- new_weights
+        sum((cur_weights - grabWeights(cur_beta,M_j))**2)
     }
 
-    warning(paste0("Numerical solving for the weights did not converge after ", ii, " iterations. Continuing computation with the current weights."))
+    soln <- optim(par=rep(1/k, k), zeroFun, lower=rep(0,k))
+    new_weights <- soln$par/sum(soln$par)
+
     list(weights=new_weights, M_j=M_j)
 }
