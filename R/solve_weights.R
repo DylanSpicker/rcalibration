@@ -45,7 +45,7 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
     k <- length(W)
 
     # Compute the weights
-    M_j <- getMj(W)
+    M_j <- getMj(W, enforce.psd=TRUE)
     cur_weights <- rep(1/k, k)
     
     for(ii in 1:maxit) {
