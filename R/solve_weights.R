@@ -60,6 +60,8 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
             return(list(weights=new_weights, M_j=M_j))
         }
 
+        cur_weights <- new_weights
+
     }
     warning("The process failed to converge. Using most recently computed weights.")
     list(weights=new_weights, M_j=M_j)
