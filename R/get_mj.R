@@ -64,14 +64,16 @@ getMj <- function(W, enforce.psd=FALSE) {
         if (enforce.psd[[idx]]) {
             eigen.d <- eigen(Mj)
             neg_ev <- which(eigen.d$values < 0)
-            
+            k_tr <- sum(eigen.d$values)
+
             if(length(neg_ev) > 0) {
                 eigen.d$values[neg_ev] <- 0
+                eigen.d$values <- eigen.d$values*k_tr/sum(eigen.d$values)
+                
                 Mj <- eigen.d$vectors %*% diag(eigen.d$values) %*% solve(eigen.d$vectors)
             }
         }
-
         Mj
     })
-
+    
 }
