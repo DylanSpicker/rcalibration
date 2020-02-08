@@ -4,11 +4,14 @@
 \alias{getMj}
 \title{An Estimator for error-covariance matrix.}
 \usage{
-getMj(W)
+getMj(W, enforce.psd = FALSE)
 }
 \arguments{
 \item{W}{A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 
 (dimension of covariates).}
+
+\item{enforce.psd}{Should the returned matrix be projected to be positive semi-definite. Can be a list (of the same length as W) or a boolean. 
+If TRUE, the corresponding Mj will be computed as the eigen-decomposition of Mj, with eigenvalues cast to 0. Defaults to FALSE.}
 }
 \value{
 A list M_j, the error-covariance structure matrix.
