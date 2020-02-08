@@ -28,16 +28,20 @@ getMj <- function(W) {
     k <- length(W)
 
     Xstar.bar <- Reduce("+", W)/k
-    M_j <- lapply(1:k, function(idx) {
+
+    M <- Reduce("+", lapply(1:k, function(idx) { 
         Xstar.cen <- W[[idx]] - Xstar.bar
 
-        M <- matrix(rep(0, p*p), nrow=p, ncol=p)
+        M_p <- matrix(rep(0, p*p), nrow=p, ncol=p)
         for (ii in 1:n) {
-            M <- M + as.matrix(Xstar.cen[ii,])%*%t(as.matrix(Xstar.cen[ii,]))
+            M_p <- M_p + as.matrix(Xstar.cen[ii,])%*%t(as.matrix(Xstar.cen[ii,]))
         }
 
-        k/(n*(k-1)) * M
-    })
+        1/(k*(k-1)) * M
+    }))
+    
+    SigmaXX <- cov(Xstar.bar) - M
 
-    M_j
+    lapply(W, function(w){ w - SigmaXX})
+
 }
