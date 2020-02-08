@@ -16,7 +16,7 @@
 #' @examples
 #' generalizedRC(W, weights="equal")
   
-generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE) {
+generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE, ...) {
   #####################
   # Parameter Checking
   ######################
@@ -34,6 +34,9 @@ generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE) {
   })
   if(length(unique(lapply(W, dim))) != 1) stop("Every element in W must have the same dimmensions.")
 
+  ################ 
+  # Compute Actual Parameters
+  ###########################
   n <- nrow(W[[1]])
   p <- ncol(W[[1]])
   k <- length(W)
@@ -68,11 +71,11 @@ generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE) {
   # Find weights
   if (length(weights) ==  1) {
     if (startsWith(weights, "n")){
-      weights.obj <- solveWeights(W)
+      weights.obj <- solveWeights(W, ...)
       weights <- weights.obj$weights
       M_j <- weights.obj$M_j
     } else if (startsWith(weights, "o")) {
-      weights.obj <- getOptimalWeights(W)
+      weights.obj <- getOptimalWeights(W, ...)
       weights <- weights.obj$weights
       M_j <- weights.obj$M_j
     } else if (startsWith(weights, "e")) {
@@ -82,7 +85,7 @@ generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE) {
 
   if(is.null(M_j)) {
     # Compute the Mj estimator for pre-defined weights
-    M_j <- getMj(W)
+    M_j <- getMj(W, ...)
   }
 
   # We have usable weights in 'weights', compute the estimator to use

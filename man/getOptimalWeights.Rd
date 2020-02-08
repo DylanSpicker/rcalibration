@@ -4,7 +4,7 @@
 \alias{getOptimalWeights}
 \title{An Estimator for "Optimal" Weight Selection}
 \usage{
-getOptimalWeights(W)
+getOptimalWeights(W, ...)
 }
 \arguments{
 \item{W}{A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 

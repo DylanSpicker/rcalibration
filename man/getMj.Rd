@@ -4,7 +4,7 @@
 \alias{getMj}
 \title{An Estimator for error-covariance matrix.}
 \usage{
-getMj(W, enforce.psd = FALSE)
+getMj(W, enforce.psd = FALSE, ...)
 }
 \arguments{
 \item{W}{A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 

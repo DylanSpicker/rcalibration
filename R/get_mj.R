@@ -11,7 +11,7 @@
 #' @examples
 #' getMj(W)
 
-getMj <- function(W, enforce.psd=FALSE) {
+getMj <- function(W, enforce.psd=FALSE, ...) {
     ########
     # Parameter Checking
     #####################

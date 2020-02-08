@@ -14,7 +14,7 @@
 #' @examples
 #' solveWeights(W)
 
-solveWeights <- function(W, maxit=500, epsilon=1e-10) {
+solveWeights <- function(W, maxit=500, epsilon=1e-10, ...) {
     #################
     # Run Error Checking for W
     #################
@@ -32,6 +32,7 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
     if(length(unique(lapply(W, dim))) != 1) stop("Every element in W must have the same dimmensions.")
 
+    # Helper Function for ITeration
     grabWeights <- function(cur_beta, M_j) {
         inverse_traces <- lapply(M_j, function(mtx){
             1/sum(diag(t(cur_beta)%*%cur_beta%*%mtx))
@@ -46,7 +47,7 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
     # Compute the weights
     tryCatch({
-        M_j <- getMj(W, enforce.psd=TRUE)
+        M_j <- getMj(W, ...)
         cur_weights <- rep(1/k, k)
 
         for(ii in 1:maxit) {
@@ -70,7 +71,7 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
     }, warning=function(w){
         message("When solving for Mj, the following warning was received: ")
         message(w)
-        message("As a result, equal weighting will be used.")
+        message("\n As a result, equal weighting will be used.")
         
         M_j <- getMj(W, enforce.psd=FALSE)
         return(list(weights=rep(1/k,k), M_j=M_j))

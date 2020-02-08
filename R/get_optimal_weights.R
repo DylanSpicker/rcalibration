@@ -11,7 +11,7 @@
 #' @examples
 #' getOptimalWeights(W)
 
-getOptimalWeights <- function(W) {
+getOptimalWeights <- function(W, ...) {
   #################
   # Run Error Checking for W
   #################
@@ -33,7 +33,7 @@ getOptimalWeights <- function(W) {
   k <- length(W)
 
   # Compute the weights
-  M_j <- getMj(W)
+  M_j <- getMj(W, ...)
   delta_j <- lapply(M_j, function(x){ return(1/sum(diag(x))) }) # Final Weights
   
   list(weights=unlist(delta_j)/Reduce("+", delta_j), M_j = M_j)

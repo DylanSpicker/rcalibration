@@ -4,7 +4,7 @@
 \alias{generalizedRC}
 \title{A Generalized Regression Calibration Estimator}
 \usage{
-generalizedRC(W, Z = NULL, weights = "numeric", return_var = FALSE)
+generalizedRC(W, Z = NULL, weights = "numeric", return_var = FALSE, ...)
 }
 \arguments{
 \item{W}{A list of length 'k' containing matrices of error-prone proxy measurements of the covariate. Matrices should all be n (observations) x p 
