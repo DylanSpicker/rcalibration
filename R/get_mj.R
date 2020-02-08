@@ -27,25 +27,17 @@ getMj <- function(W) {
     p <- ncol(W[[1]])
     k <- length(W)
 
-    # List of Estimates for Xj* Covariance
-    SigmaXstar <- lapply(W, function(x){ 
-    x_c <- t(x) - colMeans(x)
-    return(1/(nrow(x) - 1)*x_c%*%t(x_c))
+    Xstar.bar <- Reduce("+", W)/k
+    M_j <- lapply(1:k, function(idx) {
+        Xstar.cen <- W[[idx]] - Xstar.bar
+
+        M <- matrix(rep(0, p*p), nrow=p, ncol=p)
+        for (ii in 1:n) {
+            M <- M + as.matrix(Xstar.cen[ii,])%*%t(as.matrix(Xstar.cen[ii,]))
+        }
+
+        k/(n*(k-1)) * M
     })
 
-    # List of k Data Matrices containing Xi*(j) 
-    BarXistar_j <- lapply(W, function(x){
-    return((1/(k-1))*(Reduce("+", W)-x))
-    })
-
-    # Generate Full M-hat
-    Mhat <- (k-1)/(k*n)*Reduce("+", lapply(1:k, function(ii_x){
-        Wc <- W[[ii_x]] - BarXistar_j[[ii_x]]
-        return(t(Wc)%*%Wc)
-    }))
-
-    # Compute the estimate for covariance of X
-    Sigma_XX1 <- (1/k)*(Reduce("+", SigmaXstar) - Mhat)
-
-    lapply(SigmaXstar, function(x){ return(x - Sigma_XX1)})
+    M_j
 }
