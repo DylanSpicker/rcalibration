@@ -37,7 +37,7 @@ getMj <- function(W) {
             M_p <- M_p + as.matrix(Xstar.cen[ii,])%*%t(as.matrix(Xstar.cen[ii,]))
         }
 
-        1/(k*(k-1)) * M_p
+        1/(n*k*(k-1)) * M_p
     }))
 
     SigmaXX <- cov(Xstar.bar) - M
