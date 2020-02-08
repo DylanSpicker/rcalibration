@@ -49,7 +49,9 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
         M_j <- getMj(W, enforce.psd=TRUE)
         cur_weights <- rep(1/k, k)
     }, warning=function(w){
-        message(paste0("When solving for Mj, the following warning was received: '", w, "' As a result, equal weighting will be used."))
+        message("When solving for Mj, the following warning was received: '")
+        message(w)
+        message("As a result, equal weighting will be used.")
         return(list(weights=rep(1/k,k), M_j=M_j))
     })
     

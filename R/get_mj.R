@@ -60,14 +60,14 @@ getMj <- function(W, enforce.psd=FALSE) {
 
     lapply(1:k, function(idx) {
         Mj <- cov(W[[idx]]) - SigmaXX
-
+        warn <- FALSE
         if (enforce.psd[[idx]]) {
             eigen.d <- eigen(Mj)
             neg_ev <- which(eigen.d$values < 0)
             k_tr <- sum(eigen.d$values)
 
             if (length(neg_ev) == length(eigen.d$values)) {
-                warning(paste0("The computed matrix for proxy #", idx, " is negative definite. In this situaiton it is recommended to use fixed weights."))
+                warn <- TRUE
             } else if(length(neg_ev) > 0) {
                 eigen.d$values[neg_ev] <- 0
                 eigen.d$values <- eigen.d$values*k_tr/sum(eigen.d$values)
@@ -75,6 +75,7 @@ getMj <- function(W, enforce.psd=FALSE) {
                 Mj <- eigen.d$vectors %*% diag(eigen.d$values) %*% solve(eigen.d$vectors)
             }
         }
+        if (warn) warning(paste0("The computed matrix for proxy #", idx, " is negative definite. In this situaiton it is recommended to use fixed weights."))
         Mj
     })
     
