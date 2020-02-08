@@ -48,28 +48,31 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
     tryCatch({
         M_j <- getMj(W, enforce.psd=TRUE)
         cur_weights <- rep(1/k, k)
-    }, warning=function(w){
-        message("When solving for Mj, the following warning was received: '")
-        message(w)
-        message("As a result, equal weighting will be used.")
-        return(list(weights=rep(1/k,k), M_j=M_j))
-    })
-    
-    for(ii in 1:maxit) {
-        cur_w <- Reduce("+", lapply(1:k, function(idx){ cur_weights[idx]*W[[idx]] }))
-        Sigma_WW <- cov(cur_w)
-        Sigma_XX <- Sigma_WW - Reduce("+", lapply(1:k, function(idx){ (cur_weights[idx]**2)*M_j[[idx]] }))
-        cur_beta <- Sigma_XX%*%solve(Sigma_WW)
 
-        new_weights <- grabWeights(cur_beta, M_j)
+        for(ii in 1:maxit) {
+            cur_w <- Reduce("+", lapply(1:k, function(idx){ cur_weights[idx]*W[[idx]] }))
+            Sigma_WW <- cov(cur_w)
+            Sigma_XX <- Sigma_WW - Reduce("+", lapply(1:k, function(idx){ (cur_weights[idx]**2)*M_j[[idx]] }))
+            cur_beta <- Sigma_XX%*%solve(Sigma_WW)
 
-        if (max(new_weights - cur_weights) <= epsilon) {
-            return(list(weights=new_weights, M_j=M_j))
+            new_weights <- grabWeights(cur_beta, M_j)
+
+            if (max(new_weights - cur_weights) <= epsilon) {
+                return(list(weights=new_weights, M_j=M_j))
+            }
+
+            cur_weights <- new_weights
         }
 
-        cur_weights <- new_weights
-    }
+        warning("The process failed to converge. Using most recently computed weights.")
+        return(list(weights=new_weights, M_j=M_j))
 
-    warning("The process failed to converge. Using most recently computed weights.")
-    list(weights=new_weights, M_j=M_j)
+    }, warning=function(w){
+        message("When solving for Mj, the following warning was received: ")
+        message(w)
+        message("As a result, equal weighting will be used.")
+        
+        M_j <- getMj(W, enforce.psd=FALSE)
+        return(list(weights=rep(1/k,k), M_j=M_j))
+    })
 }
