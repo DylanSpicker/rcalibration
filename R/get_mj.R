@@ -42,6 +42,6 @@ getMj <- function(W) {
 
     SigmaXX <- cov(Xstar.bar) - M
 
-    lapply(W, function(w){ w - SigmaXX})
+    lapply(W, function(w){ cov(w) - SigmaXX})
 
 }
