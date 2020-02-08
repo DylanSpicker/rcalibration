@@ -58,7 +58,7 @@ getMj <- function(W, enforce.psd=FALSE) {
 
     SigmaXX <- cov(Xstar.bar) - M
 
-    lapply(1:k, function(idx){ 
+    lapply(1:k, function(idx) {
         Mj <- cov(W[[idx]]) - SigmaXX
 
         if (enforce.psd[[idx]]) {
@@ -66,7 +66,9 @@ getMj <- function(W, enforce.psd=FALSE) {
             neg_ev <- which(eigen.d$values < 0)
             k_tr <- sum(eigen.d$values)
 
-            if(length(neg_ev) > 0) {
+            if (length(neg_ev) == length(eigen.d$values)) {
+                warning(paste0("The computed matrix for proxy #", idx, " is negative definite. In this situaiton it is recommended to use fixed weights."))
+            } else if(length(neg_ev) > 0) {
                 eigen.d$values[neg_ev] <- 0
                 eigen.d$values <- eigen.d$values*k_tr/sum(eigen.d$values)
                 
