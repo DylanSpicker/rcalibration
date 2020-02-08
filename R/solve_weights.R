@@ -46,18 +46,21 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10) {
 
     # Compute the weights
     M_j <- getMj(W)
-        
-    zeroFun <- function(cur_weights) {
+    cur_weights <- rep(1/k, k)
+    
+    for(ii in 1:maxit) {
         cur_w <- Reduce("+", lapply(1:k, function(idx){ cur_weights[idx]*W[[idx]] }))
         Sigma_WW <- cov(cur_w)
         Sigma_XX <- Sigma_WW - Reduce("+", lapply(1:k, function(idx){ (cur_weights[idx]**2)*M_j[[idx]] }))
         cur_beta <- Sigma_XX%*%solve(Sigma_WW)
 
-        sum((cur_weights - grabWeights(cur_beta,M_j))**2)
+        new_weights <- grabWeights(cur_beta, M_j)
+
+        if (max(new_weights - cur_weights) <= epsilon) {
+            return(list(weights=new_weights, M_j=M_j))
+        }
+
     }
-
-    soln <- optim(par=rep(1/k, k), zeroFun, lower=rep(0,k))
-    new_weights <- soln$par/sum(soln$par)
-
+    warning("The process failed to converge. Using most recently computed weights.")
     list(weights=new_weights, M_j=M_j)
 }
