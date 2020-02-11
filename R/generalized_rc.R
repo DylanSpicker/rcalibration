@@ -89,7 +89,7 @@ generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE, ...) {
   }
 
   # We have usable weights in 'weights', compute the estimator to use
-  Xstar <- Reduce("+", lapply(1:k, function(ii){ return(weights[ii]*W[[ii]]) }))
+  Xstar <- Reduce("+", lapply(1:k, function(ii){ as.matrix(weights[ii]*W[[ii]]) }))
   mu_x_hat <- colMeans(Xstar)
   SigmaXstar <- cov(Xstar)
   SigmaXX <- SigmaXstar - Reduce("+", lapply(1:k, function(ii){ (weights[ii]**2)*M_j[[ii]] }))
@@ -99,23 +99,29 @@ generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE, ...) {
   SigmaZ <- NULL
   SigmaXZ <- NULL
 
+  correction <- function(Xstar, Z=NULL){
+      if (! is.null(Z) ) warning("This model was fit without a 'Z', but you provided one for the correction. It is being ignored. ")
+      return(t(mu_x_hat + SigmaXX %*% solve(SigmaXstar) %*% (t(Xstar) - mu_x_hat)))
+  }
+
   if(! is.null(Z)) {
     mu_z_hat <- colMeans(Z)
     SigmaZ <- cov(Z)
     SigmaXZ <- cov(Xstar, Z)
 
-    correction <- function(Xstar, Z) {
-      return(t(mu_x_hat + cbind(SigmaXX, SigmaXZ) %*% 
-                          solve(rbind(cbind(SigmaXstar, SigmaXZ),
-                                    cbind(t(SigmaXZ), SigmaZ))) %*% 
-                          rbind(t(Xstar) - mu_x_hat, t(Z) - mu_z_hat)))
+    # Ensure that there is, in fact, variance present. 
+    if (all(abs(SigmaXZ) <= 1e-6) || all(abs(SigmaZ <= 1e-6))) {
+      warning("The provided Z has effectively no variance. The model is being fit without it.")
+      Z <- NULL
+    } else {
+      correction <- function(Xstar, Z) {
+        return(t(mu_x_hat + cbind(SigmaXX, SigmaXZ) %*% 
+                            solve(rbind(cbind(SigmaXstar, SigmaXZ),
+                                      cbind(t(SigmaXZ), SigmaZ))) %*% 
+                            rbind(t(Xstar) - mu_x_hat, t(Z) - mu_z_hat)))
+      }
     }
 
-  } else {
-    correction <- function(Xstar, Z=NULL){
-        if (! is.null(Z) ) warning("This model was fit without a 'Z', but you provided one for the correction. It is being ignored. ")
-        return(t(mu_x_hat + SigmaXX %*% solve(SigmaXstar) %*% (t(Xstar) - mu_x_hat)))
-    }
   }
 
   # Check if we need to construct list
