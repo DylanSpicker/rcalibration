@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' generalizedRC(W, weights="equal")
-  
+
 generalizedRC <- function(W, Z=NULL, weights="numeric", return_var=FALSE, ...) {
   #####################
   # Parameter Checking

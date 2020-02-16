@@ -36,9 +36,9 @@ getMj <- function(W, enforce.psd=FALSE, ...) {
 
     if ( ! inherits(enforce.psd, "list") ) enforce.psd <- lapply(1:length(W), function(x){ enforce.psd }) 
 
-    #######
-    # Compute Estimator
-    ####################
+    #####################
+    # Compute Estimator #
+    #####################
     n <- nrow(W[[1]])
     p <- ncol(W[[1]])
     k <- length(W)
@@ -57,7 +57,7 @@ getMj <- function(W, enforce.psd=FALSE, ...) {
     }))
 
     SigmaXX <- cov(Xstar.bar) - M
-
+    
     lapply(1:k, function(idx) {
         Mj <- cov(W[[idx]]) - SigmaXX
         warn <- FALSE

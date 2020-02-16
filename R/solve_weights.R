@@ -47,8 +47,8 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10, ...) {
 
     # Compute the weights
     tryCatch({
-        M_j <- getMj(W, ...)
         cur_weights <- rep(1/k, k)
+        M_j <- getMj(W, ...)
 
         for(ii in 1:maxit) {
             cur_w <- Reduce("+", lapply(1:k, function(idx){ cur_weights[idx]*W[[idx]] }))
@@ -65,13 +65,15 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10, ...) {
             cur_weights <- new_weights
         }
 
-        warning("The process failed to converge. Using most recently computed weights.")
-        return(list(weights=new_weights, M_j=M_j))
-
+        warning(paste0("When computing weights, the process failed to converge. For the purposes of debugging: \n",
+                       "\t Iterations: ", ii, "\n",
+                       "\t Epsilon: ", epsilon, "\n",
+                       "\t Current weights: ", paste0(cur_weights, collapse=", "), "\n",
+                       "\t Mj Diagonals: ", unlist(lapply(M_j, function(m){ paste0("(", paste0(diag(m), collapse=", "), "); ") }))))
+                       
     }, warning=function(w){
-        message("When solving for Mj, the following warning was received: ")
         message(w)
-        message("\n As a result, equal weighting will be used.")
+        message("\n\n Equal weighting will be used.\n")
         
         M_j <- getMj(W, enforce.psd=FALSE)
         return(list(weights=rep(1/k,k), M_j=M_j))
