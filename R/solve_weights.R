@@ -64,13 +64,8 @@ solveWeights <- function(W, maxit=500, epsilon=1e-10, ...) {
 
             cur_weights <- new_weights
         }
-
-        warning(paste0("When computing weights, the process failed to converge. For the purposes of debugging: \n",
-                       "\t Iterations: ", ii, "\n",
-                       "\t Epsilon: ", epsilon, "\n",
-                       "\t Current weights: ", paste0(cur_weights, collapse=", "), "\n",
-                       "\t Mj Diagonals: ", unlist(lapply(M_j, function(m){ paste0("(", paste0(diag(m), collapse=", "), "); ") }))))
-                       
+        warning(paste0("When computing weights, the process failed to converge. "))
+              
     }, warning=function(w){
         message(w)
         message("\n\n Equal weighting will be used.\n")
